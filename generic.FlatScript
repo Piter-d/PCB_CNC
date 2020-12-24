@@ -1,0 +1,267 @@
+# initialisation par defaut
+
+set diam 0.5
+set diam_isol 0.5				
+set prof -0.25					
+set amorce [expr $prof - 0.2]	
+set feedrate 60					
+set feedrate_z 30				
+set feedrate_drill 30			
+set feedrate_drill_z 30			
+set spindlespeed 8000			
+set z_move 1					
+set dpp 0.40					
+set dpp_drill 0.40				
+set z_drill -2.0				
+set z_cut -1.8					
+
+set ecart 0.05
+if { $diam == 0.5 } {
+	set ecart 0.02
+}
+set card $::env(CARD)
+set local_path $card
+
+set param $::env(PARAM)
+
+if { $param == "0.5"} {
+	set diam 0.5
+	set diam_isol 0.5
+	set ecart 0.02
+}
+
+if { $param == "0.6"} {
+	set diam 0.6
+	set diam_isol 0.6
+	set ecart 0.05
+}
+
+if { $param == "0.1"} {
+	set diam 0.5
+	set diam_isol 0.1
+	set ecart 0.01
+	set amorce $prof
+	set prof -0.12
+}
+
+if { $param == "0.2"} {
+	set diam 0.5
+	set diam_isol 0.2
+	set ecart 0.01
+	set amorce $prof
+	set prof -0.12
+}
+
+if { $param == "0.3"} {
+	set diam 0.5
+	set diam_isol 0.2
+	set ecart 0.01
+	set amorce $prof
+	set prof -0.12
+}
+
+new
+set_path $local_path
+
+#verification si il y a du texte
+set text_file "\\texte.gbr"
+set text_complete $local_path$text_file
+set texte 0
+if { [file exists $text_complete] == 1} {
+	if {[file size $text_complete] >= 200} {
+		set texte 1
+	}
+}
+
+#verification si il y a de la decoupe
+set dimension_file "\\dimension.gbr"
+set dimension_complete $local_path$dimension_file
+set dimension 0
+if { [file exists $dimension_complete] == 1} {
+	if {[file size $dimension_complete] >= 200} {
+		set dimension 1
+	}
+}
+
+puts "Open Gerber"
+open_gerber dessous.gbr
+if { $dimension } {
+	open_gerber dimension.gbr
+}
+if { $texte } {
+	open_gerber texte.gbr
+}
+open_excellon drill.xln
+
+if { $dimension } {
+	# on va faire de la decoupe avec dimension
+	geocutout dimension.gbr -dia [expr $diam - $ecart] -gapsize 0.4 -gaps lr -outname dimension_cutout
+	set dimension_string [options dimension_cutout] 
+	set dimension_list [split $dimension_string "\n"]
+
+	foreach e $dimension_list {
+   		set l [split $e " "]
+		if  { [lindex $l 0] == "xmin:"} {set xmin [lindex $l 1]}
+		if  { [lindex $l 0] == "ymin:"} {set ymin [lindex $l 1]}
+		if  { [lindex $l 0] == "xmax:"} {set xmax [lindex $l 1]}
+		if  { [lindex $l 0] == "ymax:"} {set ymax [lindex $l 1]}
+	}
+
+} else {
+	# on n'a pas de dimension alors on utilise cutout
+	cutout dessous.gbr -dia [expr $diam - $ecart] -margin 1.5 -gapsize 0.0 -gaps tb -outname dessous_cutout
+	set cutout_string [options dessous_cutout] 
+	set cutout_list [split $cutout_string "\n"]
+
+	foreach e $cutout_list {
+   		set l [split $e " "]
+		if  { [lindex $l 0] == "xmin:"} {set xmin [lindex $l 1]}
+		if  { [lindex $l 0] == "ymin:"} {set ymin [lindex $l 1]}
+		if  { [lindex $l 0] == "xmax:"} {set xmax [lindex $l 1]}
+		if  { [lindex $l 0] == "ymax:"} {set ymax [lindex $l 1]}
+	}
+}
+
+#on va decaler 
+set xoff [expr ($diam / 2) - $xmin]
+set yoff [expr ($diam / 2) - $ymin]
+
+set xx [expr $xmax - $xmin + $diam]
+set yy [expr $ymax - $ymin + $diam]
+
+offset dessous.gbr -x $xoff -y $yoff
+if { $texte } {
+	offset texte.gbr -x $xoff -y $yoff
+}
+offset drill.xln -x $xoff -y $yoff
+if { $dimension } {
+	offset dimension.gbr -x $xoff -y $yoff
+	offset dimension_cutout -x $xoff -y $yoff
+} else {
+	offset dessous_cutout -x $xoff -y $yoff
+}
+
+puts "Working in progress"
+isolate dessous.gbr -dia [expr $diam_isol - $ecart] -passes 1 -overlap 0 -combine True -iso_type 2 -outname dessous_isolate
+if { $texte } {
+	isolate texte.gbr -dia -0.1 -passes 1 -overlap 0 -combine True -iso_type 2 -outname dessous_texte
+}
+milld drill.xln -tooldia [expr $diam - $ecart] -outname geo_drill
+
+cncjob dessous_isolate -dia [expr $diam_isol - $ecart] -z_cut $prof -z_move $z_move -feedrate $feedrate -feedrate_z $feedrate_z -endz 2 -spindlespeed $spindlespeed -outname isolate
+if { $texte } {
+	cncjob dessous_texte -dia 0.1 -z_cut $prof -z_move $z_move -feedrate $feedrate -feedrate_z $feedrate_z -endz 2 -spindlespeed $spindlespeed -outname texte 
+}
+cncjob geo_drill -dia [expr $diam - $ecart] -z_cut $z_drill -z_move $z_move -feedrate $feedrate_drill -feedrate_z $feedrate_drill_z -dpp $dpp_drill -endz 2 -spindlespeed $spindlespeed -outname drill
+if { $dimension } {
+	cncjob dimension_cutout -dia $diam -z_cut $z_cut -z_move $z_move -feedrate $feedrate -feedrate_z $feedrate_z -dpp $dpp -endz 4 -spindlespeed $spindlespeed -outname cutout
+} else {
+	cncjob dessous_cutout -dia $diam -z_cut $z_cut -z_move $z_move -feedrate $feedrate -feedrate_z $feedrate_z -dpp $dpp -endz 4 -spindlespeed $spindlespeed -outname cutout
+}
+
+plot_all
+
+puts "Wrting files"
+write_gcode isolate cnc01_isolate.nc
+if { $texte } {
+	write_gcode texte cnc01_texte.nc
+}
+write_gcode drill cnc02_drill.nc
+write_gcode cutout cnc03_cutout.nc
+
+#set complet [open [format "complet.%.0f.%.0f.nc" $xx $yy] w]
+set complet [open "complet.nc" w]
+puts $complet "M7"		
+puts $complet "M8"		
+
+set init [open "isolate.nc" w]
+puts $init "M7"		
+puts $init "M8"
+
+set prefixe "G01 Z"
+
+set fi [open "cnc01_isolate.nc" r]
+set line [read -nonewline $fi]
+foreach line [split $line "\n"] {
+	if { [string equal -length 5 "G01 Z" $line] } {
+		puts $complet $prefixe$amorce
+		puts $init $prefixe$amorce
+	}
+	if { [string equal -length 3 "M05" $line] } {
+		#puts $complet "(M05)"
+		puts $complet $line
+		puts $init $line
+	} else {
+		puts $complet $line
+		puts $init $line
+	}
+}
+close $fi
+
+if { $texte } {
+	#set init_texte [open "cnc01_texte_init.nc" w]
+	set fi [open "cnc01_texte.nc" r]
+	set line [read -nonewline $fi]
+	foreach line [split $line "\n"] {
+		if { [string equal -length 5 "G01 Z" $line] } {
+			puts $complet $prefixe$amorce
+			puts $init $prefixe$amorce
+		}
+		if { [string equal -length 3 "M05" $line] } {
+			#puts $complet "(M05)"
+			puts $complet $line
+			puts $init $line
+		} else {
+			puts $complet $line
+			puts $init $line
+		}		
+	}
+	close $fi
+	#close $init_texte
+}
+
+puts $init "M9"
+close $init
+
+set init [open "drill_and_cut.nc" w]
+puts $init "M7"		
+puts $init "M8"
+
+set fi [open "cnc02_drill.nc" r]
+set line [read -nonewline $fi]
+foreach line [split $line "\n"] {
+	if { [string equal -length 3 "M05" $line] } {
+		#puts $complet "(M05)"
+		puts $complet $line
+		puts $init $line
+	} else {
+		puts $complet $line
+		puts $init $line
+	}	
+}
+close $fi 
+
+
+set fi [open "cnc03_cutout.nc" r]
+set line [read -nonewline $fi]
+foreach line [split $line "\n"] {
+    puts $complet $line
+	puts $init $line
+}
+close $fi 
+
+puts $init "M9"
+close $init
+
+puts $complet "M9"		
+close $complet
+
+file delete "cnc01_isolate.nc"
+if { $texte } {
+	file delete "cnc01_texte.nc"
+}
+file delete "cnc02_drill.nc"
+file delete "cnc03_cutout.nc"
+
+
+puts "End of operations"

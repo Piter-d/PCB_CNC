@@ -13,6 +13,6 @@ L'opération se réalise en plusieurs étapes:
   - bCNC permet de faire une première mise au point en probe sur l'axe des Z
   - Et ensuite de faire un palpage de surface automatique
 
-##Résultats
+## Résultats
 Voici un premier résultat en faisant passer une via entre deux grosses pastilles; pas si mal
 ![plot](png/test1.png)

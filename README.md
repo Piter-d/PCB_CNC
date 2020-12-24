@@ -12,3 +12,7 @@ L'opération se réalise en plusieurs étapes:
   - (Je n'ai pas réussi a utiliser Candle qui semble plus fluide mais qui se bloque au bout d'un moment sur de gros fichiers)
   - bCNC permet de faire une première mise au point en probe sur l'axe des Z
   - Et ensuite de faire un palpage de surface automatique
+
+##Résultats
+Voici un premier résultat en faisant passer une via entre deux grosses pastilles; pas si mal
+![plot](png/test1.png)

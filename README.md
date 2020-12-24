@@ -5,5 +5,10 @@ L'opération se réalise en plusieurs étapes:
 - Génération de fichiers gerber
   - J'utilise Eagle avec un cam spécifique [fichier CAM](cnc.cam) (créé directement dans Eagle)
 - Utilisation de flatCam pour les convertir en gcode
+  - J'ai construit un petit script windows pour passer le repertoire courant en parametre [fichier bat](FlatCAM.bat)
+  - Et un autre script en tcl pour piloter FlatCAM [fichier flatcam](generic.FlatScript)
+  - A la fin il y a un enchainement pour fabriquer une version en 90°
 - Gravure avec la CNC en utilisant bCNC
   - (Je n'ai pas réussi a utiliser Candle qui semble plus fluide mais qui se bloque au bout d'un moment sur de gros fichiers)
+  - bCNC permet de faire une première mise au point en probe sur l'axe des Z
+  - Et ensuite de faire un palpage de surface automatique

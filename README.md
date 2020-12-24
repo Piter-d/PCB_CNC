@@ -14,6 +14,11 @@ L'opération se réalise en plusieurs étapes:
   - Les autres pièces ont été dessinées sous sketchup et imprimée avec ma petite Tiertime UP Mini
 - Génération de fichiers gerber
   - J'utilise Eagle avec un cam spécifique [fichier CAM](cnc.cam) (créé directement dans Eagle)
+  - Mes paramètres Eagle sont
+    - Clearance = 0.05mm (dans le menu Edit/Design rules/Clearance pour tous les paramètres)
+    - Création de net spécifiques (dans le menu Edit/Net classes)
+      - "CNC_Data" avec Clearance=0.05mm, Width=0.56mm)
+      - "CNC_power" avec Clearance=0.05mm
 - Utilisation de flatCam pour les convertir en gcode
   - J'ai construit un petit script windows pour passer le repertoire courant en parametre [fichier bat](FlatCAM.bat)
   - Et un autre script en tcl pour piloter FlatCAM [fichier flatcam](generic.FlatScript)

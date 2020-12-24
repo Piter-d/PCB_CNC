@@ -2,6 +2,16 @@
 
 L'idée générale est de graver une plaque de PCB avec une machine CNC de façon industrielle
 L'opération se réalise en plusieurs étapes:
+- Construction d'une machine cnc avec :
+  - Le maximum de matériaux de grande distribution
+    - Tiges filetées diamètre 6
+    - Tiges carrées en aluminium coté 15mm
+    - planche MDF
+    - Vis diametre 4 longueur 16mm avec écrous
+  - Quelques composants acheté chez Aliexpress
+    - Roulement diamètre 6
+    - 
+  - Les autres pièces ont été dessinées sous sketchup et imprimée avec ma petite Tiertime UP Mini
 - Génération de fichiers gerber
   - J'utilise Eagle avec un cam spécifique [fichier CAM](cnc.cam) (créé directement dans Eagle)
 - Utilisation de flatCam pour les convertir en gcode

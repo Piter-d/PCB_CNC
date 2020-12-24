@@ -38,7 +38,7 @@ if { $param == "0.6"} {
 
 if { $param == "0.1"} {
 	set diam 0.5
-	set diam_isol 0.1
+	set diam_isol 0.05
 	set ecart 0.01
 	set amorce $prof
 	set prof -0.12

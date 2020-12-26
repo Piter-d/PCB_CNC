@@ -44,3 +44,5 @@ L'opération se réalise en plusieurs étapes:
 ## Résultats
 Voici un premier résultat en faisant passer une via entre deux grosses pastilles; pas si mal
 ![plot](png/test1.png)
+Pour le test suivant, un peu plus complet, on voit que les pad trop petits ne sont pas très bien découpés. J'utiliserai donc des pad plus grandes
+![plot](png/arduino_nrf.png)

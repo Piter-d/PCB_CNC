@@ -50,10 +50,10 @@ L'opération se réalise en plusieurs étapes:
     - Une dremel de base
     
   - Quelques composants achetés chez Aliexpress
-    - Roulement diamètre 6
+    - Roulement diamètre 6 (il en faut environ 58)
     - 5 x TB6560 (contrôleurs de moteurs pas à pas)
     - 5 x NEMA 17 (2A)
-    - 1 x ESP32 (que je n'utilse pas en WiFi car chez moi ça ne marche pas très bien)
+    - 1 x ESP32 (que je utilise pas en WiFi car chez moi ça ne marche pas très bien)
     - 1 relai pour démarrer la Dremel automatiquement
     
   - Deux bobines de PLA d'un kg achetées chez Amazon 
@@ -65,7 +65,13 @@ L'opération se réalise en plusieurs étapes:
     
   - Les autres pièces ont été dessinées sous sketchup et imprimées avec ma petite Tiertime UP Mini
   
-  - Bref, un peu moins de 100€ investis et une table CNC plutôt de bonne facture pour ce rapport qualité/prix. C'est un point très important pour la précision des circuits imprimés réalisés
+    Le fichier sketchup est  [CNC.skp](3D\CNC.skp) (attention car l'assemblage présenté dans le fichier ne reflète pas mon montage exact, je l'ai adapté au fur et à mesure. En particulier j'ai tout fait à partir de vis et non par emboitement en force. Par contre les pièces individuelles devraient être correctes)
+  
+    <img src="png/image-20201227135116038.png" alt="image-20201227135116038" style="zoom:25%;" />
+  
+    Un exemple de pièce que vous y trouverez qui est le profile le plus important car, avec 4 roulements de diamètre 6, il permet de gérer le déplacement.
+  
+  - J'ai investit un peu moins de 100€ investis. La table me convient pour ce rapport qualité/prix. C'est un point très important pour la précision des circuits imprimés réalisés
   
   - Une photo (pas très bien prise de ma CNC)
   
@@ -73,13 +79,13 @@ L'opération se réalise en plusieurs étapes:
   
     
   
-  - Si cela intéresse quelqu'un, je pourrai faire un tutorial sur ce sujet quand j'aurai le temps. On peut voir ma lime et ma brosse à dents ;-)
+  - Si cela intéresse quelqu'un, je pourrai faire un tutorial sur ce sujet quand j'aurai le temps. On peut voir ma lime et ma brosse à dents pour les finitions ;-)
   
 - **Génération de fichiers gerber**
 
   - J'utilise Eagle v 9.6.2 avec un cam spécifique [fichier CAM](cnc.cam) (créé directement dans Eagle)
 
-  - ![image-20201227102011485](png/image-20201227102011485.png)
+    ![image-20201227102011485](png/image-20201227102011485.png)
 
     Vous pouvez remarquer que dans le menu "advanced", j'ai coché "Mirror"
 
@@ -136,6 +142,9 @@ L'opération se réalise en plusieurs étapes:
   
   - La syntaxe est : FlatCAM 0.1 qui génère tous les fichiers avec une pointe de 0,1 et un maïs de 0,5 dans deux fichiers séparés
   
+    - la pointe de 0,1 est une pointe javelot de 60° et sert uniquement a faire les isolations et le texte
+    - la fraise de 0,5 est une fraise maïs de 0,5 et sert uniquement a fraiser les trous et les contours
+  
   - Un exemple de ce qui est généré
   
     ![image-20201227105128755](png/image-20201227105128755.png)
@@ -154,24 +163,39 @@ L'opération se réalise en plusieurs étapes:
     -rw-r--r-- 1 Pierre Aucun  791256 27 déc.  10:50 complet.nc
     ``````
   
-    Il y a 3 nouveaux fichiers en gcode dont
+    Il y a 3 nouveaux fichiers en gcode
   
     - isolate.nc permet de graver avec une fraise de 0.1
   
     - drill_and_cut.nc permet de graver avec une fraise maïs de 0.5
+    - complet.nc qui sert si on utilise uniquement la fraise maïs de 0.5 (et donc avec une précision moins bonne mais une réalisation sans changement d'outil). Dans ce cas, l'appel doit être "flatcam 0.5"
   
 - **Gravure avec la CNC en utilisant bCNC**
   
   - (Je n'ai pas réussi a utiliser Candle qui semble plus fluide mais qui se bloque au bout d'un moment sur de gros fichiers)
+  
   - bCNC permet de faire une première mise au point en probe sur l'axe des Z
+  
   - Et ensuite de faire un palpage de surface automatique avant de lancer l'impression
+  
   - Je lance en premier isolation.nc avec une pointe 60° 0,1mm puis drill_and_cut.nc avec un maïs de 0,5mm. Entre les deux étapes, je change la fraise et je refais uniquement un probe Z en position X0Y0.
+  
+    ![image-20201227133720270](png/image-20201227133720270.png)
+  
+    "isolate.nc"
+  
+    ![image-20201227133842916](png/image-20201227133842916.png)
+  
+    "drill_and_cut.nc". Vous pouvez remarquer que pour faire les trous, la fraise maïs fait des cercles. De plus, les trous ne se font pas en 1 fois, mais progressivement (comme on peut le voir dans le script tcl).
+  
+    On commence par faire les trous, et enfin la découpe. A la fin de la découpe, il reste deux petites attaches qui sont à casser pour prendre le circuit.
+  
   - A la fin de la gravure, la pièce se détache très facilement. Avec une lime métal, je passe un coup léger sur les fixations. Et avec une lime à ongle multi-face, je brosse légèrement le circuit et enfin avec un petit coup de brosse à dents, j'élimine toutes les poussières.
 
 ## Résultats
 Voici un premier résultat en faisant passer une via entre deux grosses pastilles. On repère un petit point à chaque descente de la fraise, mais rien de grave (peut être un défaut dans le script TCL)
 ![plot](png/test1.png)
 
-Pour le test suivant, un peu plus complet, on voit que les pad trop petits ne sont pas très bien découpés. J'utiliserai donc des pad plus grands
+Pour le test suivant, un peu plus complet, on voit que les pad trop petits ne sont pas très bien découpés. J'utiliserai donc des pad plus grands. Je n'ai pas encore gravé l'exemple du tuto. Je le mettrai en ligne dès que possible.
 
 ![plot](png/arduino_nrf.png)

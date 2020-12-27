@@ -2,31 +2,81 @@
 
 **<u>Avertissement :</u>** Je ne suis qu'un amateur, l'électronique n'est pas mon métier. Il est donc probable que ce que je présente ci-dessous puisse être réalisé de façon plus simple ou mieux optimisée. 
 
+**Pourquoi ce post :**
+
+Utilisateur des services de gravure de circuit imprimé en Chine (j'en ai utilisé plusieurs différents), j'ai eu envie de réaliser une chaine de fabrication qui me permette de graver un circuit en une heure
+
+**Avantages de faire fabriquer des circuits en Chine**
+
+-  Prix avantageux (pour une petite vingtaine d'euros on peut avoir une dizaine de circuits imprimés)
+- Accessibilité du double face, voire 4
+- Finesse de la gravure
+- Finition du circuit imprimé (et facilité de soudure)
+- Génial pour des petites séries
+
+**Inconvénients de faire fabriquer des circuits en Chine**
+
+- Délais de réalisation (pour garder un prix faible). Pour moi, environ 1 mois
+- Quasi obligation d'acheter les circuits par 10 (prix identique)
+
+**J'ai eu envie de faire quelque chose de différent qui me permette de tout faire moi-même.**
+
+Avantage d'utiliser une chaine de fabrication maison
+
+- Rapidité de réalisation d'un circuit (pas de transport)
+- Possibilité de faire un seul exemplaire
+- Le plaisir de construire
+
+**Inconvénient d'utiliser une chaine de fabrication maison**
+
+- Il faut avoir un peu de matériel (une CNC, ...)
+- La finesse de gravure est très faible. J'arrive uniquement à faire une piste qui passe entre deux pastilles :-)
+- La qualité du circuit et l'importance de soigner les soudures (difficile de ressouder sans décoller les pastilles)
+
+
+
+Après ces considérations, ...
+
 L'idée générale est de graver une plaque de PCB avec une machine CNC de façon industrielle
 L'opération se réalise en plusieurs étapes:
 
-- Construction d'une machine cnc avec :
+- **Construction d'une machine cnc avec :**
+  
   - Le maximum de matériaux de grande distribution
     - Tiges filetées diamètre 6
     - Tiges carrées en aluminium coté 15mm
     - planche MDF
     - Vis diamètre 4 longueur 16mm avec écrous
     - Une dremel de base
+    
   - Quelques composants achetés chez Aliexpress
     - Roulement diamètre 6
     - 5 x TB6560 (contrôleurs de moteurs pas à pas)
     - 5 x NEMA 17 (2A)
     - 1 x ESP32 (que je n'utilse pas en WiFi car chez moi ça ne marche pas très bien)
     - 1 relai pour démarrer la Dremel automatiquement
+    
   - Deux bobines de PLA d'un kg achetées chez Amazon 
+  
   - Des éléments de récupération (ou que j'avais déjà)
     - 1 x Alimentation 12V 10A
     - 2 x STEPDOWN DC (1 configuré en 3,3V et l'autre en 5V)
     - 1 x STEPDOWN + 1 BC557 pour alimenter le ventilateur
+    
   - Les autres pièces ont été dessinées sous sketchup et imprimées avec ma petite Tiertime UP Mini
+  
   - Bref, un peu moins de 100€ investis et une table CNC plutôt de bonne facture pour ce rapport qualité/prix. C'est un point très important pour la précision des circuits imprimés réalisés
   
-- Génération de fichiers gerber
+  - Une photo (pas très bien prise de ma CNC)
+  
+    ![image-20201227112703543](png/image-20201227112703543.png)
+  
+    
+  
+  - Si cela intéresse quelqu'un, je pourrai faire un tutorial sur ce sujet quand j'aurai le temps. On peut voir ma lime et ma brosse à dents ;-)
+  
+- **Génération de fichiers gerber**
+
   - J'utilise Eagle v 9.6.2 avec un cam spécifique [fichier CAM](cnc.cam) (créé directement dans Eagle)
 
   - ![image-20201227102011485](png/image-20201227102011485.png)
@@ -74,7 +124,7 @@ L'opération se réalise en plusieurs étapes:
 
     Ces fichiers sont les fichiers gerber utilisés par la section suivante avec flatCam
 
-- Utilisation de flatCam pour les convertir en gcode
+- **Utilisation de flatCam pour les convertir en gcode**
   
   - La version que j'utilise est la 8.993 BETA 64bit (la version suivante ne semble pas interpréter le script tcl comme je le veux)
   
@@ -110,7 +160,7 @@ L'opération se réalise en plusieurs étapes:
   
     - drill_and_cut.nc permet de graver avec une fraise maïs de 0.5
   
-- Gravure avec la CNC en utilisant bCNC
+- **Gravure avec la CNC en utilisant bCNC**
   
   - (Je n'ai pas réussi a utiliser Candle qui semble plus fluide mais qui se bloque au bout d'un moment sur de gros fichiers)
   - bCNC permet de faire une première mise au point en probe sur l'axe des Z
@@ -119,7 +169,7 @@ L'opération se réalise en plusieurs étapes:
   - A la fin de la gravure, la pièce se détache très facilement. Avec une lime métal, je passe un coup léger sur les fixations. Et avec une lime à ongle multi-face, je brosse légèrement le circuit et enfin avec un petit coup de brosse à dents, j'élimine toutes les poussières.
 
 ## Résultats
-Voici un premier résultat en faisant passer une via entre deux grosses pastilles; pas si mal. On repère un petit point à chaque descente de la fraise, mais rien de grave
+Voici un premier résultat en faisant passer une via entre deux grosses pastilles. On repère un petit point à chaque descente de la fraise, mais rien de grave (peut être un défaut dans le script TCL)
 ![plot](png/test1.png)
 
 Pour le test suivant, un peu plus complet, on voit que les pad trop petits ne sont pas très bien découpés. J'utiliserai donc des pad plus grands

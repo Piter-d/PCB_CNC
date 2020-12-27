@@ -21,7 +21,7 @@ Utilisateur des services de gravure de circuit imprimé en Chine (j'en ai utilis
 
 **J'ai eu envie de faire quelque chose de différent qui me permette de tout faire moi-même.**
 
-Avantage d'utiliser une chaine de fabrication maison
+**Avantage d'utiliser une chaine de fabrication maison**
 
 - Rapidité de réalisation d'un circuit (pas de transport)
 - Possibilité de faire un seul exemplaire
@@ -135,6 +135,8 @@ L'opération se réalise en plusieurs étapes:
   - La version que j'utilise est la 8.993 BETA 64bit (la version suivante ne semble pas interpréter le script tcl comme je le veux)
   
   - J'ai construit un petit script windows pour passer le répertoire courant en paramètre [fichier bat](FlatCAM.bat) car je ne savais pas faire autrement
+  
+    - Ce script utilise aussi un petit outil qui s'appelle grecode (https://github.com/bkubicek/grecode) pour adapter le fichier gcode a 90° ce qui peut être pratique pour optimiser la place qui reste sur votre plaque de circuit imprimé. J'en profite pour remercier Bernhard Kubicek pour son travail
   
   - Et un autre script en tcl pour piloter FlatCAM [fichier flatcam](generic.FlatScript)
   

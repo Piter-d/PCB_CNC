@@ -76,7 +76,7 @@ L'opération se réalise en plusieurs étapes:
 
 - Utilisation de flatCam pour les convertir en gcode
   
-  - La version que j'utilise est la 8.993 BETA 64bit (la version suivante ne semble pas interpréter le script tcl comme je le )
+  - La version que j'utilise est la 8.993 BETA 64bit (la version suivante ne semble pas interpréter le script tcl comme je le veux)
   
   - J'ai construit un petit script windows pour passer le répertoire courant en paramètre [fichier bat](FlatCAM.bat) car je ne savais pas faire autrement
   
@@ -84,7 +84,7 @@ L'opération se réalise en plusieurs étapes:
   
   - A la fin il y a un enchainement pour fabriquer une version en 90°
   
-  - La syntaxe est : FlatCAM 0.1 qui génère tous les fichiers avec une point de 0,1 et un maïs de 0,5 dans deux fichiers séparés
+  - La syntaxe est : FlatCAM 0.1 qui génère tous les fichiers avec une pointe de 0,1 et un maïs de 0,5 dans deux fichiers séparés
   
   - Un exemple de ce qui est généré
   
@@ -108,14 +108,15 @@ L'opération se réalise en plusieurs étapes:
   
     - isolate.nc permet de graver avec une fraise de 0.1
   
-    - drill_and_cut.nc permet de gaver avec une fraise maïs de 0.5
+    - drill_and_cut.nc permet de graver avec une fraise maïs de 0.5
   
 - Gravure avec la CNC en utilisant bCNC
   
   - (Je n'ai pas réussi a utiliser Candle qui semble plus fluide mais qui se bloque au bout d'un moment sur de gros fichiers)
   - bCNC permet de faire une première mise au point en probe sur l'axe des Z
   - Et ensuite de faire un palpage de surface automatique avant de lancer l'impression
-  - Je lance en premier isolation.nc avec une pointe 60° 0,1mm puis drill_and_cut.nc avec un maïs de 0,5mm
+  - Je lance en premier isolation.nc avec une pointe 60° 0,1mm puis drill_and_cut.nc avec un maïs de 0,5mm. Entre les deux étapes, je change la fraise et je refais uniquement un probe Z en position X0Y0.
+  - A la fin de la gravure, la pièce se détache très facilement. Avec une lime métal, je passe un coup léger sur les fixations. Et avec une lime à ongle multi-face, je brosse légèrement le circuit et enfin avec un petit coup de brosse à dents, j'élimine toutes les poussières.
 
 ## Résultats
 Voici un premier résultat en faisant passer une via entre deux grosses pastilles; pas si mal. On repère un petit point à chaque descente de la fraise, mais rien de grave

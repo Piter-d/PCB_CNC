@@ -198,6 +198,16 @@ L'opération se réalise en plusieurs étapes:
 Voici un premier résultat en faisant passer une via entre deux grosses pastilles. On repère un petit point à chaque descente de la fraise, mais rien de grave (peut être un défaut dans le script TCL)
 ![plot](png/test1.png)
 
-Pour le test suivant, un peu plus complet, on voit que les pad trop petits ne sont pas très bien découpés. J'utiliserai donc des pad plus grands. Je n'ai pas encore gravé l'exemple du tuto. Je le mettrai en ligne dès que possible.
+Pour le test suivant, un peu plus complet, on voit que les pad trop petits ne sont pas très bien découpés. J'utiliserai donc des pad plus grands.
 
 ![plot](png/arduino_nrf.png)
+
+Voici la gravure correspondante au schéma initial.
+
+![test2](C:\Users\Pierre\Dropbox\eagle\png\test2.png)
+
+Il y a un problème à régler : Certaines petites fontes ne sont pas gravées (j'aurai du le voir dans la génération flatcam car c'était déjà visible)
+
+![test3](C:\Users\Pierre\Dropbox\eagle\png\test3.png)
+
+Voici la version visible à travers une lumière

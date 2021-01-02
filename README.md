@@ -204,10 +204,10 @@ Pour le test suivant, un peu plus complet, on voit que les pad trop petits ne so
 
 Voici la gravure correspondante au schéma initial.
 
-![test2](C:\Users\Pierre\Dropbox\eagle\png\test2.png)
+![test2](png/test2.png)
 
 Il y a un problème à régler : Certaines petites fontes ne sont pas gravées (j'aurai du le voir dans la génération flatcam car c'était déjà visible)
 
-![test3](C:\Users\Pierre\Dropbox\eagle\png\test3.png)
+![test3](png/test3.png)
 
 Voici la version visible à travers une lumière

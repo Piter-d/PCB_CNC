@@ -114,8 +114,8 @@ L'opération se réalise en plusieurs étapes:
   - Pour une gravure avec une fraise de 0.5
   
     - dans les paramètre généraux 6mil (0.1524mm) (Ca ne sert pas à grand chose mais c'est par défaut)
-    - dans le net classes Width=34mil et Clearance=0,3476mm (0.5mm-6mil) pour que le bord d'une piste soit le bord de l'autre
-    - pour les via, il faut prendre 70mil et au moins 24mil de trou
+    - dans le net classes Width=34mil et Clearance=0,4mm pour que le bord d'une piste soit le bord de l'autre
+    - pour les via, il faut prendre 70mil et au moins 25mil de trou
   
   - Exemple de board
 

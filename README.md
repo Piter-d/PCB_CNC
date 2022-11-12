@@ -95,7 +95,7 @@ L'opération se réalise en plusieurs étapes:
 
     ![image-20201227102614193](png/image-20201227102614193.png)
 
-  - Mes paramètres Eagle sont
+  - Mes paramètres pour une gravure avec une fraise 0.1 Eagle sont
 
     - Clearance = 0.05mm (dans le menu Edit/Design rules/Clearance pour tous les paramètres)
 
@@ -111,6 +111,11 @@ L'opération se réalise en plusieurs étapes:
       - "CNC_power" avec Clearance=0.05mm
       - Et évidemment, il faut que les objets aient comme propriété de NetClass la bonne valeur
 
+  - Pour une gravure avec une fraise de 0.5
+  
+    - dans les paramètre généraux 6mil (0.1524mm) (Ca ne sert pas à grand chose mais c'est par défaut)
+    - dans le net classes Width=34mil et Clearance=0,3476mm (0.5mm-6mil) pour que le bord d'une piste soit le bord de l'autre
+  
   - Exemple de board
 
     ![image-20201227103726477](png/image-20201227103726477.png)
